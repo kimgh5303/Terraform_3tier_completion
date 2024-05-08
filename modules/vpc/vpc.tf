@@ -5,7 +5,9 @@ resource "aws_vpc" "vpc" {
   enable_dns_support   = true
   enable_dns_hostnames = true
 
-#  tags = {
-#    Name = format("%s-vpc", var.tags["name"])
-#  }
+  tags = {
+    Name = format("%s-vpc", var.tags.value)
+    key                 = var.tags.key
+    value               = var.tags.value
+  }
 }

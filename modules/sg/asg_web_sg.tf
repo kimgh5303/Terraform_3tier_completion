@@ -40,6 +40,8 @@ resource "aws_security_group" "asg_web_sg" {
   }
 
   tags = {
-    Name = format("%s-asg-web-sg", var.tags["name"])
+    Name = format("%s-asg-web-sg", var.tags.value)
+    key                 = var.tags.key
+    value               = var.tags.value
   }
 }

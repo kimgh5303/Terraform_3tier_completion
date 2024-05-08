@@ -27,6 +27,8 @@ resource "aws_security_group" "alb_app_sg" {
   }
 
   tags = {
-    Name = format("%s-alb-app-sg", var.tags["name"])
+    Name = format("%s-alb-app-sg", var.tags.value)
+    key                 = var.tags.key
+    value               = var.tags.value
   }
 }

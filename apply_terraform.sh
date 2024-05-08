@@ -2,6 +2,9 @@
 # 스크립트 파일을 실행하여 Terraform 적용
 terraform apply -var-file="terraform.tfvars" -var-file="secret.tfvars" -auto-approve
 
+# terraform plan
+terraform plan -var-file="terraform.tfvars" -var-file="secret.tfvars"
+
 # 터미널에 실행 권한 부여
 # chmod +x apply_terraform.sh
 

@@ -27,6 +27,8 @@ resource "aws_security_group" "db_sg" {
   }
 
   tags = {
-    Name = format("%s-db-sg", var.tags["name"])
+    Name = format("%s-db-sg", var.tags.value)
+    key                 = var.tags.key
+    value               = var.tags.value
   }
 }

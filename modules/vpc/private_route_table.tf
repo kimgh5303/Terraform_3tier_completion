@@ -29,7 +29,7 @@ resource "aws_route_table" "private_rt" {
   }
 
   tags = {
-    Name = format("%s-%s", var.tags["name"], each.key)
+    Name = format("%s-%s", var.tags.value, each.key)
   }
 }
 

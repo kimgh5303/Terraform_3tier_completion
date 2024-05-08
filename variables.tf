@@ -90,7 +90,6 @@ variable "rds_db" {
   })
 }
 
-# secret.tfvars
 variable "db_user" {
   type = object({
     db_username            = string

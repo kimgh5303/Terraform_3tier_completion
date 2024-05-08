@@ -8,7 +8,7 @@ resource "aws_route_table" "public_rt" {
   }
 
   tags = {
-    Name = format("%s-pub-rt", var.tags["name"])
+    Name = format("%s-pub-rt", var.tags.value)
   }
 }
 

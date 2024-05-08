@@ -38,6 +38,8 @@ resource "aws_security_group" "asg_app_sg" {
   }
 
   tags = {
-    Name = format("%s-asg-app-sg", var.tags["name"])
+    Name = format("%s-asg-app-sg", var.tags.value)
+    key                 = var.tags.key
+    value               = var.tags.value
   }
 }
