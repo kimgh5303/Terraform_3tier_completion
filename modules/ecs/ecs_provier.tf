@@ -4,7 +4,7 @@ resource "aws_ecs_capacity_provider" "main" {
   name = "kgh-ecs-ec2"
 
   auto_scaling_group_provider {
-    auto_scaling_group_arn         = aws_autoscaling_group.asg_web.arn
+    auto_scaling_group_arn         = var.asg_web_arn
     managed_termination_protection = "DISABLED"
 
     managed_scaling {
@@ -17,7 +17,7 @@ resource "aws_ecs_capacity_provider" "main" {
 }
 
 resource "aws_ecs_cluster_capacity_providers" "main" {
-  cluster_name       = aws_ecs_cluster.main.name
+  cluster_name       = aws_ecs_cluster.ecs_cluster.name
   capacity_providers = [aws_ecs_capacity_provider.main.name]
 
   default_capacity_provider_strategy {

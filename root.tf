@@ -70,4 +70,18 @@ module "asg" {
   db_sg = module.sg.db_sg
   rds_db    = var.rds_db
   db_user = var.db_user
+  
+  ecs_cluster = module.ecs.ecs_cluster
+}
+
+module "ecs" {
+  source   = "./modules/ecs"
+  region  = var.region
+  tags     = var.tags
+  
+  tg_web = module.alb.tg_web
+  asg_web_arn = module.asg.asg_web_arn
+  
+  web_subnet_ids = module.vpc.web_subnet_ids
+  app_subnet_ids = module.vpc.app_subnet_ids
 }

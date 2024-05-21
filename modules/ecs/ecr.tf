@@ -1,6 +1,6 @@
 resource "aws_ecr_repository" "repo" {
-  tag = {
-    Name = format("%s-ecr", var.tags.value),
+  name                 = "kgh-ecr"
+  tags = {
     key                 = var.tags.key
     value               = var.tags.value
   }

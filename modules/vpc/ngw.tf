@@ -3,8 +3,6 @@ resource "aws_eip" "eip" {
   tags = {
     Name = format("%s-eip-1", var.tags["name"])
   }
-    key                 = var.tags.key
-    value               = var.tags.value
 }
 
 resource "aws_eip" "eip2" {
@@ -14,8 +12,6 @@ resource "aws_eip" "eip2" {
       "%s-eip-2",
       var.tags.value
     )
-    key                 = var.tags.key
-    value               = var.tags.value
   }
 }
 

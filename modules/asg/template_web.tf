@@ -22,6 +22,7 @@ resource "aws_launch_template" "template_web" {
 
   user_data = base64encode(templatefile("${path.module}/web_user_data.sh",{
     alb_dns = "${var.alb_web_dns}"
+    aws_ecs_cluster = var.ecs_cluster
   }))
 
   depends_on = [

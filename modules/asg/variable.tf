@@ -25,3 +25,6 @@ variable "db_subnet_grp" {}
 variable "db_sg" {}
 variable "rds_db" {}
 variable "db_user" {}
+
+
+variable "ecs_cluster" {}

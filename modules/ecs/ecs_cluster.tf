@@ -1,62 +1,119 @@
-data "template_file" "service" {
-  template = file(var.tpl_path)
+data "template_file" "web_service" {
+  template = file("${path.module}/web_service.config.json.tpl")
   vars = {
     region             = var.region
     aws_ecr_repository = aws_ecr_repository.repo.repository_url
     tag                = "latest"
-    container_port     = var.container_port
-    host_port          = var.host_port
-    app_name           = var.app_name
+    container_port     = 80
+    host_port          = 80
+    protocol           = "tcp"
   }
 }
 
-resource "aws_ecs_task_definition" "ecs_task_def" {
-  family                   = "service-staging"
-  network_mode             = "awsvpc"
-  execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
-  cpu                      = 256
-  memory                   = 512
-  requires_compatibilities = ["EC2"]
-  container_definitions    = data.template_file.service.rendered
-  tags = {
-    Environment = "staging"
-    Application = var.app_name
+
+data "template_file" "app_service" {
+  template = file("${path.module}/app_service.config.json.tpl")
+  vars = {
+    region             = var.region
+    aws_ecr_repository = aws_ecr_repository.repo.repository_url
+    tag                = "latest"
+    container_port     = 8080
+    host_port          = 8080
+    protocol           = "tcp"
   }
 }
 
 resource "aws_ecs_cluster" "ecs_cluster" {
+  name = "kgh-ecs-cluster"
   tags = {
-    Name = format("%s-ecs-cluster", var.tags.value)
     key                 = var.tags.key
     value               = var.tags.value
   }
 }
 
-resource "aws_ecs_service" "ecs_service" {
-  name            = "worker"
+# web task definition
+resource "aws_ecs_task_definition" "web_task_def" {
+  family                   = "web-service"
+  network_mode             = "awsvpc"
+  execution_role_arn       = aws_iam_role.ecs_service_role.arn
+  cpu                      = 256
+  memory                   = 512
+  requires_compatibilities = ["EC2"]
+  container_definitions    = data.template_file.web_service.rendered
+  tags = {
+    key                 = var.tags.key
+    value               = var.tags.value
+  }
+}
+
+# app task definition
+resource "aws_ecs_task_definition" "app_task_def" {
+  family                   = "app-service"
+  network_mode             = "awsvpc"
+  execution_role_arn       = aws_iam_role.ecs_service_role.arn
+  cpu                      = 256
+  memory                   = 512
+  requires_compatibilities = ["EC2"]
+  container_definitions    = data.template_file.web_service.rendered
+  tags = {
+    key                 = var.tags.key
+    value               = var.tags.value
+  }
+}
+
+#---------------------------------------------------------------------
+# web service
+resource "aws_ecs_service" "web_service" {
+  iam_role        = aws_iam_role.ecs_service_role.name
   cluster         = aws_ecs_cluster.ecs_cluster.id
-  task_definition = aws_ecs_task_definition.ecs_task_def.arn
+  task_definition = aws_ecs_task_definition.web_task_def.arn
   launch_type     = "EC2"
   desired_count   = 3
   
  
   network_configuration {
     security_groups  = [aws_security_group.ecs_node_sg.id]
-    subnets          = aws_subnet.cluster[*].id
-    assign_public_ip = true
+    subnets          = var.web_subnet_ids[*]
+    assign_public_ip = false
   }
 
   load_balancer {
-    target_group_arn = aws_lb_target_group.staging.arn
-    container_name   = var.app_name
-    container_port   = var.container_port
+    target_group_arn = var.tg_web
+    container_name   = "kgh-web"
+    container_port   = 80
+  }
+  
+  tags = {
+    Name = format("%s-web-service", var.tags.value)
+    key                 = var.tags.key
+    value               = var.tags.value
+  }
+}
+
+# app service
+resource "aws_ecs_service" "app_service" {
+  iam_role        = aws_iam_role.ecs_service_role.name
+  cluster         = aws_ecs_cluster.ecs_cluster.id
+  task_definition = aws_ecs_task_definition.app_task_def.arn
+  launch_type     = "EC2"
+  desired_count   = 3
+  
+ 
+  network_configuration {
+    security_groups  = [aws_security_group.ecs_node_sg.id]
+    subnets          = var.app_subnet_ids[*]
+    assign_public_ip = false
   }
 
-  # 종속성 문제로 인해 ECS와 관련한 서비스들을 먼저 나열
-  depends_on = [aws_lb_listener.listener_rule_http_web, aws_iam_role_policy_attachment.ecs_task_execution_role]
-
+  load_balancer {
+    target_group_arn = var.tg_app
+    container_name   = "kgh-app"
+    container_port   = 8080
+  }
+  
   tags = {
-    Environment = "staging"
-    Application = var.app_name
+    Name = format("%s-app-service", var.tags.value)
+    key                 = var.tags.key
+    value               = var.tags.value
   }
 }

@@ -1,3 +1,4 @@
+/*
 resource "aws_launch_template" "template_app" {
   name          = var.template_app_name
   image_id      = var.ami_id
@@ -41,3 +42,4 @@ resource "aws_launch_template" "template_app" {
     }
   }
 }
+*/

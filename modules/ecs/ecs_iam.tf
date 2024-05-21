@@ -1,4 +1,4 @@
-data "aws_iam_policy_document" "ecs_task_execution_role" {
+data "aws_iam_policy_document" "ecs_service_policy" {
   version = "2012-10-17"
   statement {
     sid     = ""
@@ -7,22 +7,22 @@ data "aws_iam_policy_document" "ecs_task_execution_role" {
 
     principals {
       type        = "Service"
-      identifiers = ["ec2.amazonaws.com"]
+      identifiers = ["ecs.amazonaws.com"]
     }
   }
 }
 
-resource "aws_iam_role" "ecs_task_execution_role" {
-  assume_role_policy = data.aws_iam_policy_document.ecs_task_execution_role.json
+resource "aws_iam_role" "ecs_service_role" {
+  assume_role_policy = data.aws_iam_policy_document.ecs_service_policy.json
 
-  tag = {
+  tags = {
     Name = format("%s-iam-ecs", var.tags.value),
     key                 = var.tags.key
     value               = var.tags.value
   }
 }
 
-resource "aws_iam_role_policy_attachment" "ecs_task_execution_role" {
-  role       = aws_iam_role.ecs_task_execution_role.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
+resource "aws_iam_role_policy_attachment" "ecs_service_role_attachment" {
+  role       = aws_iam_role.ecs_service_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceRole"
 }

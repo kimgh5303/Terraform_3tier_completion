@@ -6,7 +6,7 @@ resource "aws_autoscaling_group" "asg_web" {
   target_group_arns   = [var.tg_web]
   health_check_type   = "EC2"
   vpc_zone_identifier = [var.web_subnet_ids["web_sub_1a"],
-                        var.web_subnet_ids["web_sub_1b"]]
+                        var.web_subnet_ids["web_sub_1c"]]
 
 
 

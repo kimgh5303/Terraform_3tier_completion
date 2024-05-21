@@ -1,3 +1,4 @@
+/*
 # RDS 데이터 소스 정의
 data "aws_db_instance" "my_rds" {
   db_instance_identifier = aws_db_instance.rds_db.identifier
@@ -23,7 +24,4 @@ resource "aws_db_instance" "rds_db" {
     value               = var.tags.value
   }
 }
-
-
-
-
+*/

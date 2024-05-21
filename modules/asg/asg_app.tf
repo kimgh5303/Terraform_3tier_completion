@@ -1,3 +1,4 @@
+/*
 resource "aws_autoscaling_group" "asg_app" {
   name                = var.asg_app_name
   desired_capacity    = 2
@@ -27,4 +28,4 @@ resource "aws_autoscaling_group" "asg_app" {
     triggers = ["tag"]
   }
 }
-
+*/
