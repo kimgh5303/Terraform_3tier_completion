@@ -1,5 +1,9 @@
 resource "aws_ecr_repository" "repo" {
-  name = "keykim/service"
+  tag = {
+    Name = format("%s-ecr", var.tags.value),
+    key                 = var.tags.key
+    value               = var.tags.value
+  }
 }
 
 

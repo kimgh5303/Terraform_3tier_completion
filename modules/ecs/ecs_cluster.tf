@@ -10,13 +10,13 @@ data "template_file" "service" {
   }
 }
 
-resource "aws_ecs_task_definition" "service" {
+resource "aws_ecs_task_definition" "ecs_task_def" {
   family                   = "service-staging"
   network_mode             = "awsvpc"
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   cpu                      = 256
   memory                   = 512
-  requires_compatibilities = ["FARGATE"]
+  requires_compatibilities = ["EC2"]
   container_definitions    = data.template_file.service.rendered
   tags = {
     Environment = "staging"
@@ -24,20 +24,24 @@ resource "aws_ecs_task_definition" "service" {
   }
 }
 
-resource "aws_ecs_cluster" "staging" {
-  name = "service-ecs-cluster"
+resource "aws_ecs_cluster" "ecs_cluster" {
+  tags = {
+    Name = format("%s-ecs-cluster", var.tags.value)
+    key                 = var.tags.key
+    value               = var.tags.value
+  }
 }
 
-resource "aws_ecs_service" "staging" {
-  name            = "staging"
-  cluster         = aws_ecs_cluster.staging.id
-  task_definition = aws_ecs_task_definition.service.arn
+resource "aws_ecs_service" "ecs_service" {
+  name            = "worker"
+  cluster         = aws_ecs_cluster.ecs_cluster.id
+  task_definition = aws_ecs_task_definition.ecs_task_def.arn
+  launch_type     = "EC2"
   desired_count   = 3
-  launch_type     = "FARGATE"
   
  
   network_configuration {
-    security_groups  = [aws_security_group.ecs_tasks.id]
+    security_groups  = [aws_security_group.ecs_node_sg.id]
     subnets          = aws_subnet.cluster[*].id
     assign_public_ip = true
   }

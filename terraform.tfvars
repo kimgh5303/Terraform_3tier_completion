@@ -1,5 +1,5 @@
 # 리전 정의
-region = "us-west-1"
+region = "ap-northeast-2"
 
 # 공통 태그 이니셜
 tags = {
@@ -9,8 +9,8 @@ tags = {
 }
 
 az_list = [
-  "us-west-1a",
-  "us-west-1b"
+  "ap-northeast-2a",
+  "ap-northeast-2c"
 ]
 
 # VPC----------------------------------------------------
@@ -19,11 +19,11 @@ vpc_cidr = "10.10.0.0/16"
 # Public Subnets 정의
 public_subnets = {
   pub_sub_1a = {
-    zone = "us-west-1a"
+    zone = "ap-northeast-2a"
     cidr = "10.10.1.0/24"
   },
-  pub_sub_1b = {
-    zone = "us-west-1b"
+  pub_sub_1c = {
+    zone = "ap-northeast-2c"
     cidr = "10.10.2.0/24"
   }
 }
@@ -31,11 +31,11 @@ public_subnets = {
 # Web Subnets 정의
 web_subnets = {
   web_sub_1a = {
-    zone = "us-west-1a"
+    zone = "ap-northeast-2a"
     cidr = "10.10.3.0/24"
   },
-  web_sub_1b = {
-    zone = "us-west-1b"
+  web_sub_1c = {
+    zone = "ap-northeast-2c"
     cidr = "10.10.4.0/24"
   }
 }
@@ -43,11 +43,11 @@ web_subnets = {
 # App Subnets 정의
 app_subnets = {
   app_sub_1a = {
-    zone = "us-west-1a"
+    zone = "ap-northeast-2a"
     cidr = "10.10.5.0/24"
   },
-  app_sub_1b = {
-    zone = "us-west-1b"
+  app_sub_1c = {
+    zone = "ap-northeast-2c"
     cidr = "10.10.6.0/24"
   }
 }
@@ -55,14 +55,14 @@ app_subnets = {
 # DB Subnets 정의
 db_subnets = {
   db_sub_1a = {
-    zone = "us-west-1a"
+    zone = "ap-northeast-2a"
     cidr = "10.10.7.0/24"
     map_public_ip_on_launch = false
   },
-  db_sub_1b = {
-    zone = "us-west-1b"
+  db_sub_1c = {
+    zone = "ap-northeast-2c"
     cidr = "10.10.8.0/24"
-    map_public_ip_on_launch = true
+    map_public_ip_on_launch = false
   }
 }
 
@@ -129,7 +129,7 @@ health_checks = {
 # Web, App OS 이미지
 template_web_name = "kgh-template-web"
 template_app_name = "kgh-template-app"
-ami_id = "ami-09021cbd462419e4c"
+ami_id = "ami-0cbe318e714fc9a82"
 instance_type = "t2.micro"
 
 # Web, App 인스턴스 안 메타데이터
@@ -157,3 +157,6 @@ rds_db = {
   "skip_final_snapshot"    : true
   "identifier"             : "my-rds-instance"
 }
+
+# ECS----------------------------------------------------
+
