@@ -8,10 +8,8 @@ tags = {
   name = "owner:kgh"
 }
 
-az_list = [
-  "ap-northeast-2a",
-  "ap-northeast-2c"
-]
+az_1                     = "ap-southeast-1a"
+az_2                     = "ap-southeast-1c"
 
 # VPC----------------------------------------------------
 vpc_cidr = "10.10.0.0/16"
@@ -150,7 +148,7 @@ rds_db = {
   "allocated_storage"      : 10
   "db_name"                : "mydb"
   "engine"                 : "mysql"
-  "engine_version"         : "5.7"
+  "engine_version"         : "8.0"
   "instance_class"         : "db.t3.micro"
   "parameter_group_name"   : "default.mysql5.7"
   "multi_az"               : true
@@ -159,4 +157,5 @@ rds_db = {
 }
 
 # ECS----------------------------------------------------
+ecs_cluster_name = "ecs-cluster"
 

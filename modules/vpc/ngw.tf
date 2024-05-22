@@ -21,9 +21,9 @@ locals {
       allocation_id = aws_eip.eip.id
       subnet_id     = aws_subnet.public_subnets["pub_sub_1a"].id
     },
-    "ngw-1b" = {
+    "ngw-1c" = {
       allocation_id = aws_eip.eip2.id
-      subnet_id     = aws_subnet.public_subnets["pub_sub_1b"].id
+      subnet_id     = aws_subnet.public_subnets["pub_sub_1c"].id
     }
   }
 }

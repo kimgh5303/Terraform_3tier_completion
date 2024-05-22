@@ -10,9 +10,14 @@ variable "tags" {
   type = map(string)
 }
 
-variable "az_list" {
-  type = list(string)
-  description = "가용 영역"
+variable "az_1" {
+  type    = string
+  description = "가용 영역1"
+}
+
+variable "az_2" {
+  type    = string
+  description = "가용 영역2"
 }
 
 # VPC----------------------------------------------------
@@ -95,4 +100,10 @@ variable "db_user" {
     db_username            = string
     db_password            = string
   })
+}
+
+# ECS----------------------------------------------------
+variable "ecs_cluster_name" {
+  type    = string
+  description = "ecs cluster name"
 }

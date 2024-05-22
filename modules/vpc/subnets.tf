@@ -77,7 +77,7 @@ resource "aws_subnet" "db_subnets" {
 
 # DB Subnet group----------------------------
 resource "aws_db_subnet_group" "db_subnet_grp" {
-  subnet_ids = [aws_subnet.db_subnets["db_sub_1a"].id,aws_subnet.db_subnets["db_sub_1b"].id]
+  subnet_ids = [aws_subnet.db_subnets["db_sub_1a"].id,aws_subnet.db_subnets["db_sub_1c"].id]
 
   tags = {
     Name = format("%s-db-sub-grp", var.tags.value)

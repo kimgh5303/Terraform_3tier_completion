@@ -26,5 +26,4 @@ variable "db_sg" {}
 variable "rds_db" {}
 variable "db_user" {}
 
-
-variable "ecs_cluster" {}
+variable "ecs_cluster_name" {}

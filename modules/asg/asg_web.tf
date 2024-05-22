@@ -8,8 +8,6 @@ resource "aws_autoscaling_group" "asg_web" {
   vpc_zone_identifier = [var.web_subnet_ids["web_sub_1a"],
                         var.web_subnet_ids["web_sub_1c"]]
 
-
-
   launch_template {
     id      = aws_launch_template.template_web.id
     version = aws_launch_template.template_web.latest_version
@@ -27,5 +25,9 @@ resource "aws_autoscaling_group" "asg_web" {
       min_healthy_percentage = 50
     }
     triggers = ["tag"]
+  }
+
+  lifecycle {
+    create_before_destroy = true
   }
 }

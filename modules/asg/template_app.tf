@@ -1,4 +1,3 @@
-/*
 resource "aws_launch_template" "template_app" {
   name          = var.template_app_name
   image_id      = var.ami_id
@@ -22,11 +21,7 @@ resource "aws_launch_template" "template_app" {
   }
 
   user_data = base64encode(templatefile("${path.module}/app_user_data.sh",{
-    host = "${data.aws_db_instance.my_rds.endpoint}"
-    rds_endpoint = "${data.aws_db_instance.my_rds.endpoint}"
-    username = "${var.db_user.db_username}"
-    password = "${var.db_user.db_password}"
-    db = "${var.rds_db.db_name}"
+    ecs-cluster-name = "${"app"}-${var.ecs_cluster_name}"
   }))
 
   depends_on = [
@@ -42,4 +37,3 @@ resource "aws_launch_template" "template_app" {
     }
   }
 }
-*/

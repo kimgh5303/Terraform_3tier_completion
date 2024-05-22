@@ -4,7 +4,7 @@ locals {
       gateway_id = aws_nat_gateway.ngw["ngw-1a"].id
     },
     "pri-rt-2" = {
-      gateway_id = aws_nat_gateway.ngw["ngw-1b"].id
+      gateway_id = aws_nat_gateway.ngw["ngw-1c"].id
     }
   }
 }
@@ -13,9 +13,9 @@ locals {
 locals {
   subnet_to_rt = {
     "web_sub_1a" = "pri-rt-1",
-    "web_sub_1b" = "pri-rt-2",
+    "web_sub_1c" = "pri-rt-2",
     "app_sub_1a" = "pri-rt-1",
-    "app_sub_1b" = "pri-rt-2"
+    "app_sub_1c" = "pri-rt-2"
   }
 }
 

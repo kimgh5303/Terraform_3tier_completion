@@ -15,6 +15,7 @@ resource "aws_ecs_capacity_provider" "web_ecs_capacity_provider" {
       target_capacity           = 100         # 목표 용량 백분율
     }
   }
+
   depends_on = [var.asg_web_arn]
 
   tags = {
@@ -39,7 +40,8 @@ resource "aws_ecs_capacity_provider" "app_ecs_capacity_provider" {
       target_capacity           = 100         # 목표 용량 백분율
     }
   }
-  depends_on = [var.asg_web_arn]
+
+  depends_on = [var.asg_app_arn]
 
   tags = {
     key                 = var.tags.key
@@ -49,12 +51,25 @@ resource "aws_ecs_capacity_provider" "app_ecs_capacity_provider" {
 
 # ECS 클러스터 용량 제공자 설정
 resource "aws_ecs_cluster_capacity_providers" "web_ecs_cluster_capacity_provider" {
-  cluster_name       = aws_ecs_cluster.ecs_cluster_web.name
+  cluster_name       = aws_ecs_cluster.web_ecs_cluster.name
   capacity_providers = [aws_ecs_capacity_provider.web_ecs_capacity_provider.name]     # 사용될 용량 제공자 목록
 
   # 기본 용량 제공자 전략 설정
   default_capacity_provider_strategy {
     capacity_provider = aws_ecs_capacity_provider.web_ecs_capacity_provider.name
+    base              = 1           # 기본 인스턴스 수
+    weight            = 100         # 가중치
+  }
+}
+
+# ECS 클러스터 용량 제공자 설정
+resource "aws_ecs_cluster_capacity_providers" "app_ecs_cluster_capacity_provider" {
+  cluster_name       = aws_ecs_cluster.app_ecs_cluster.name
+  capacity_providers = [aws_ecs_capacity_provider.app_ecs_capacity_provider.name]     # 사용될 용량 제공자 목록
+
+  # 기본 용량 제공자 전략 설정
+  default_capacity_provider_strategy {
+    capacity_provider = aws_ecs_capacity_provider.app_ecs_capacity_provider.name
     base              = 1           # 기본 인스턴스 수
     weight            = 100         # 가중치
   }

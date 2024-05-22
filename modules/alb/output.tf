@@ -8,6 +8,10 @@ output "alb_web" {
   value = aws_lb.alb_web
 }
 
+output "alb_app_dns" {
+  value = aws_lb.alb_app.dns_name
+}
+
 output "tg_web" {
   value = aws_lb_target_group.tg_web.arn
 }
