@@ -143,6 +143,8 @@ variable "image-id" {
 
 variable "instance-type" {}
 
+variable "bastion-instance-type" {}
+
 #variable "key-name" {
 #  description = "Value for Key name"
 #}
@@ -173,9 +175,9 @@ variable "asg-sg-app-name" {}
 
 variable "tg-app-name" {}
 
-variable "db-username" {}
+variable "db_username" {}
 
-variable "db-password" {}
+variable "db_password" {}
 
 variable "db-name" {}
 

@@ -13,7 +13,7 @@ resource "aws_ecs_task_definition" "web-ecs-service" {
   container_definitions = jsonencode([
     {
       name      = "web-nginx-container"
-      image     = "381492154999.dkr.ecr.ap-southeast-1.amazonaws.com/frontend:2.0"
+      image     = "381492154999.dkr.ecr.ap-southeast-1.amazonaws.com/frontend:latest"
       cpu       = 10
       memory    = 256
       essential = true
@@ -76,7 +76,7 @@ resource "aws_ecs_task_definition" "app-ecs-service" {
   container_definitions = jsonencode([
     {
       name      = "app-nginx-container"
-      image     = "381492154999.dkr.ecr.ap-southeast-1.amazonaws.com/backend:2.0"
+      image     = "381492154999.dkr.ecr.ap-southeast-1.amazonaws.com/backend:latest"
       cpu       = 10
       memory    = 256
       essential = true
@@ -89,10 +89,10 @@ resource "aws_ecs_task_definition" "app-ecs-service" {
       "essential": true,
       environment = [
         {name = "rds_endpoint", value = "${data.aws_db_instance.my_rds.endpoint}"},
-        {name = "HOST", value = "${local.host}"},
-        {name = "USERNAME", value = "${var.db-username}"},
-        {name = "PASSWORD", value = "${var.db-password}"},
-        {name = "DB", value = "${var.db-name}"},
+        {name = "HOST",         value = "${local.host}"},
+        {name = "USERNAME",     value = "${var.db_username}"},
+        {name = "PASSWORD",     value = "${var.db_password}"},
+        {name = "DB",           value = "${var.db-name}"},
       ],
       logConfiguration = {
         logDriver = "awslogs",
@@ -116,6 +116,7 @@ resource "aws_ecs_task_definition" "app-ecs-service" {
     expression = "attribute:ecs.availability-zone in [${var.az-1}, ${var.az-2}]"
   }
 
+  depends_on = [null_resource.db_schema_setup]
 
   tags = {
     Name = "${var.app-prefix}-${var.ecs-task-definition}"

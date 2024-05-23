@@ -1,5 +1,8 @@
 ## REGION & Network 
-region-name              = "ap-southeast-1"
+region-name              = "ap-northeast-2"
+az-1                     = "ap-northeast-2a"
+az-2                     = "ap-northeast-2c"
+
 vpc-cidr-block           = "10.0.0.0/16"
 vpc-name                 = "three-tier-vpc"
 igw-name                 = "three-tier-igw"
@@ -31,15 +34,16 @@ db-subnet2-cidr          = "10.0.8.0/24"
 db-subnet2-name          = "three-tier-db-subnet-2"
 
 ## AZ & Routing Table
-az-1                     = "ap-southeast-1a"
-az-2                     = "ap-southeast-1c"
 public-rt-name           = "three-tier-public-route-table"
 private-rt-name1         = "three-tier-private-route-table1"
 private-rt-name2         = "three-tier-private-route-table2"
 
 launch-template-web-name = "three-tier-launch-template-web"
-image-id                 = "ami-0709a71954f69cc26" # 최신 amazon linux2023 ami-id 고정. ecs-optimized
+image-id                 = "ami-0dfabddd52dec98c7" # 최신 amazon linux2023 ami-id 고정. ecs-optimized
 instance-type            = "t2.micro"
+
+bastion-image-id         = "ami-0dfabddd52dec98c7"
+bastion-instance-type    = "t2.micro"
 
 
 ## Tag name
@@ -66,12 +70,12 @@ db-subnet-grp-name       = "three-tier-db-subnet-grp"
 app-db-sg-name           = "three-tier-app-db"
 
 # iam role 이름
-ecs_task_execution_role = "lhs-ecs-taskExecutionRole"
-ecs-instance-role = "lhs-ecs-instanceRole"
-ecs-service-role = "lhs-ecs-serviceRole"
+ecs_task_execution_role = "kgh-ecs-taskExecutionRole"
+ecs-instance-role = "kgh-ecs-instanceRole"
+ecs-service-role = "kgh-ecs-serviceRole"
 
 # 태그 설정(name, mark, environment)
-owner-tag = "lhs"
+owner-tag = "kgh"
 
 #prefix 설정
 dev-prefix = "dev"
