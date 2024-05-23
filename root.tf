@@ -85,6 +85,7 @@ module "ecs" {
   rds_endpoint = module.asg.rds_endpoint
   db_user = var.db_user
   rds_db    = var.rds_db
+  host      = module.asg.host
 
   tg_web = module.alb.tg_web
   tg_app = module.alb.tg_app

@@ -1,3 +1,4 @@
+/*
 resource "aws_ecr_repository" "repo" {
   name                 = "kgh-ecr"
   tags = {
@@ -5,7 +6,6 @@ resource "aws_ecr_repository" "repo" {
     value               = var.tags.value
   }
 }
-
 
 resource "aws_ecr_lifecycle_policy" "repo-policy" {
   repository = aws_ecr_repository.repo.name
@@ -42,3 +42,4 @@ resource "aws_ecr_lifecycle_policy" "repo-policy" {
 }
 EOF
 }
+*/

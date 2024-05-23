@@ -23,3 +23,13 @@ resource "aws_db_instance" "rds_db" {
     value               = var.tags.value
   }
 }
+
+resource "null_resource" "db_init" {
+  provisioner "local-exec" {
+    command = <<EOT
+      mysql -h ${aws_db_instance.rds_db.endpoint} -u ${var.db_user["db_username"]} -p${var.db_user["db_password"]} < init.sql
+    EOT
+  }
+
+  depends_on = [aws_db_instance.rds_db]
+}

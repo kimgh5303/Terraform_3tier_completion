@@ -9,6 +9,7 @@ variable "alb_app_dns" {}
 variable "rds_endpoint" {}
 variable "db_user" {}
 variable "rds_db" {}
+variable "host" {}
 
 variable "tg_web" {}
 variable "tg_app" {}

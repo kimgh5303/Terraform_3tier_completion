@@ -127,7 +127,7 @@ health_checks = {
 # Web, App OS 이미지
 template_web_name = "kgh-template-web"
 template_app_name = "kgh-template-app"
-ami_id = "ami-0cbe318e714fc9a82"
+ami_id = "ami-0dfabddd52dec98c7"
 instance_type = "t2.micro"
 
 # Web, App 인스턴스 안 메타데이터
@@ -150,7 +150,7 @@ rds_db = {
   "engine"                 : "mysql"
   "engine_version"         : "8.0"
   "instance_class"         : "db.t3.micro"
-  "parameter_group_name"   : "default.mysql5.7"
+  "parameter_group_name"   : "default.mysql8.0"
   "multi_az"               : true
   "skip_final_snapshot"    : true
   "identifier"             : "my-rds-instance"

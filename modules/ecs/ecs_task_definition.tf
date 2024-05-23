@@ -17,7 +17,7 @@ resource "aws_ecs_task_definition" "web_task_def" {
   container_definitions = jsonencode([
     {
       name      = "web-nginx-container"
-      image     = "381492154999.dkr.ecr.ap-northeast-2.amazonaws.com/frontend:2.0"
+      image     = "381492154999.dkr.ecr.ap-northeast-2.amazonaws.com/frontend:latest"
       cpu       = 10
       memory    = 256
       essential = true
@@ -70,7 +70,7 @@ resource "aws_ecs_task_definition" "app_task_def" {
   container_definitions = jsonencode([
     {
       name      = "app-nginx-container"
-      image     = "381492154999.dkr.ecr.ap-southeast-1.amazonaws.com/backend:2.0"
+      image     = "381492154999.dkr.ecr.ap-southeast-1.amazonaws.com/backend:latest"
       cpu       = 10
       memory    = 256
       essential = true
@@ -83,6 +83,7 @@ resource "aws_ecs_task_definition" "app_task_def" {
       "essential": true,
       environment = [
       {name = "rds_endpoint", value = "${var.rds_endpoint}"},
+      {name = "HOST", value = "${var.host}"},
       {name = "USERNAME", value = "${var.db_user.db_username}"},
       {name = "PASSWORD", value = "${var.db_user.db_password}"},
       {name = "DB", value = "${var.rds_db.db_name}"},

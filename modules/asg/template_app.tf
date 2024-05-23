@@ -37,3 +37,8 @@ resource "aws_launch_template" "template_app" {
     }
   }
 }
+
+locals {
+  rds_endpoint = "${data.aws_db_instance.my_rds.endpoint}"
+  host = replace(local.rds_endpoint, ":3306", "")
+}
