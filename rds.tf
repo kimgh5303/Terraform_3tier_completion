@@ -25,16 +25,21 @@ resource "aws_db_instance" "rds-db" {
   }
 }
 
+
+locals {
+  db_endpoint = split(":", aws_db_instance.rds-db.endpoint)[0]
+}
+
 # DB 스키마 설정-----------------------------------------------------------
 resource "null_resource" "db_schema_setup" {
-  depends_on = [aws_db_instance.my_rds]
+  depends_on = [aws_db_instance.rds-db]
 
   provisioner "file" {
     connection {
       type        = "ssh"
       user        = "ec2-user"
       host        = aws_instance.bastion.public_ip
-      private_key = file("~/.ssh/ec2_cert.pem")
+      private_key = file(local_file.private_key_pem.filename)
     }
 
     source      = "./init.sql"
@@ -46,13 +51,19 @@ resource "null_resource" "db_schema_setup" {
       type        = "ssh"
       user        = "ec2-user"
       host        = aws_instance.bastion.public_ip
-      private_key = tls_private_key.private_key.private_key_pem
+      private_key = file(local_file.private_key_pem.filename)
     }
 
     inline = [
-      # SSH 터널링 설정 및 스키마 적용
-      "ssh -o StrictHostKeyChecking=no -f -N -L 3306:${aws_db_instance.my_rds.address}:3306 ec2-user@${aws_instance.bastion.public_ip}",
-      "mysql --host=127.0.0.1 --port=3306 --user=${aws_db_instance.my_rds.username} --password=${aws_db_instance.my_rds.password} < /home/ec2-user/schema.sql"
+      # MySQL Community Repository 추가
+      "sudo yum install -y https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm",
+      "sudo rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2022",
+
+      # MySQL 클라이언트 설치
+      "sudo yum install -y mysql-community-client",
+
+      # SSH 터널링 및 스키마 적용
+      "mysql -h ${local.db_endpoint} -P 3306 -u ${var.db_username} -p${var.db_password} < /home/ec2-user/init.sql"
     ]
   }
 }

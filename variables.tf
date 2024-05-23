@@ -143,6 +143,8 @@ variable "image-id" {
 
 variable "instance-type" {}
 
+variable "bastion-image-id" {}
+
 variable "bastion-instance-type" {}
 
 #variable "key-name" {

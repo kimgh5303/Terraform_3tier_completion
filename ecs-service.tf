@@ -46,7 +46,8 @@ resource "aws_ecs_service" "app-ecs-service" {
   task_definition = aws_ecs_task_definition.app-ecs-service.arn
   desired_count   = 6
   #iam_role        = aws_iam_role.ecs-service-role.arn
-  depends_on = [aws_ecs_task_definition.app-ecs-service,aws_ecs_cluster.ecs-cluster-app,aws_db_instance.rds-db]
+
+  depends_on = [aws_ecs_task_definition.app-ecs-service,aws_ecs_cluster.ecs-cluster-app]
 
   ordered_placement_strategy {
     type  = "spread"

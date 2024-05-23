@@ -1,21 +1,9 @@
-# SSH 키 생성
-resource "tls_private_key" "private_key" {
-  algorithm = "RSA"
-  rsa_bits  = 2048
-}
-
-# SSH 키를 AWS에 등록
-resource "aws_key_pair" "deployer" {
-  key_name   = "ssh-key"
-  public_key = tls_private_key.private_key.public_key_openssh
-}
-
 # 베스천 호스트 인스턴스 생성
 resource "aws_instance" "bastion" {
   ami           = var.bastion-image-id
   instance_type = var.bastion-instance-type
   subnet_id     = aws_subnet.public-subnet1.id
-  security_groups = [aws_security_group.bastion_sg.name]
+  vpc_security_group_ids = [aws_security_group.bastion_sg.id]
 
   key_name = aws_key_pair.deployer.key_name
 
@@ -27,7 +15,7 @@ resource "aws_instance" "bastion" {
 
 # 베스천 호스트 보안 그룹
 resource "aws_security_group" "bastion_sg" {
-  vpc_id = aws_vpc.main.id
+  vpc_id = aws_vpc.vpc.id
 
   ingress {
     from_port   = 22
@@ -45,6 +33,6 @@ resource "aws_security_group" "bastion_sg" {
 
   tags = {
     Name  = "bastion-sg"
-    Owner = var.owner_tag
+    Owner = var.owner-tag
   }
 }

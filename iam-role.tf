@@ -1,3 +1,36 @@
+/*
+# Session Manager
+resource "aws_iam_role" "ec2_ssm_role" {
+  name = "kgh-ec2-ssm-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+        Effect = "Allow"
+        Sid = ""
+      },
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "ec2_ssm_attach" {
+  role       = aws_iam_role.ec2_ssm_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM"
+}
+
+resource "aws_iam_instance_profile" "kgh_ec2_ssm_instance_profile" {
+  name = "kgh-ec2-ssm-instance-profile"
+  role = aws_iam_role.ec2_ssm_role.name
+}
+*/
+
+#------------------------------------------------------------------------------------------------------
+
 data "aws_caller_identity" "current" {}
 
 data "aws_region" "current" {}
