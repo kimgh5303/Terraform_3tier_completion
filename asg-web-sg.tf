@@ -12,11 +12,11 @@ resource "aws_security_group" "asg-security-group-web" {
   }
 
   ingress {
-    description = "SSH From Anywhere or Your-IP"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    description     = "HTTP from ALB"
+    from_port       = 1024
+    to_port         = 65535
+    protocol        = "tcp"
+    security_groups = [aws_security_group.alb-security-group-web.id]
   }
 
   egress {
@@ -28,5 +28,6 @@ resource "aws_security_group" "asg-security-group-web" {
 
   tags = {
     Name = var.asg-sg-web-name
+    Owner = var.owner-tag
   }
 }

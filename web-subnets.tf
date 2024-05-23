@@ -6,6 +6,7 @@ resource "aws_subnet" "public-subnet1" {
 
   tags = {
     Name = var.public-subnet1-name
+    Owner = var.owner-tag
   }
 }
 
@@ -17,5 +18,6 @@ resource "aws_subnet" "public-subnet2" {
 
   tags = {
     Name = var.public-subnet2-name
+    Owner = var.owner-tag
   }
 }

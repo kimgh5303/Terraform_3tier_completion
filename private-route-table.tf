@@ -8,6 +8,7 @@ resource "aws_route_table" "private-route-table1" {
 
   tags = {
     Name = var.private-rt-name1
+    Owner = var.owner-tag
   }
 }
 
@@ -21,6 +22,7 @@ resource "aws_route_table" "private-route-table2" {
 
   tags = {
     Name = var.private-rt-name2
+    Owner = var.owner-tag
   }
 }
 

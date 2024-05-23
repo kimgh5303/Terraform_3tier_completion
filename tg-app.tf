@@ -12,6 +12,11 @@ resource "aws_lb_target_group" "target-group-app" {
     unhealthy_threshold = 5
 
   }
+
+  tags = {
+    Name = var.tg-app-name
+    Owner = var.owner-tag
+  }
 }
 
 resource "aws_lb_listener" "alb_listener-app" {
@@ -22,5 +27,11 @@ resource "aws_lb_listener" "alb_listener-app" {
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.target-group-app.arn
+  }
+
+  depends_on = [aws_lb.alb-app]
+
+  tags = {
+    Owner = var.owner-tag
   }
 }

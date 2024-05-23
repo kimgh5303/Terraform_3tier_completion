@@ -28,5 +28,6 @@ resource "aws_security_group" "alb-security-group-web" {
 
   tags = {
     Name = var.alb-sg-web-name
+    Owner = var.owner-tag
   }
 }

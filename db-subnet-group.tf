@@ -4,5 +4,6 @@ resource "aws_db_subnet_group" "subnet-grp" {
 
   tags = {
     Name = var.db-subnet-grp-name
+    Owner = var.owner-tag
   }
 }

@@ -4,9 +4,18 @@ resource "aws_launch_template" "template-app" {
   instance_type = var.instance-type
   #key_name      = var.key-name
   
-  #iam_instance_profile {
-  #  name = aws_iam_instance_profile.asg_instance_profile.name
-  #}
+  iam_instance_profile {
+    arn = aws_iam_instance_profile.ecs_instance_profile.arn
+  }
+
+  monitoring {
+    enabled = true
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
 
   network_interfaces {
     device_index    = 0
@@ -24,11 +33,7 @@ resource "aws_launch_template" "template-app" {
 
 
   user_data = base64encode(templatefile("app-user-data.sh",{
-    host = "${local.host}"
-    rds_endpoint = "${data.aws_db_instance.my_rds.endpoint}"
-    username = "${var.db-username}"
-    password = "${var.db-password}"
-    db = "${var.db-name}"
+    ecs-cluster-name = "${var.app-prefix}-${var.ecs-cluster-name}"
   }))
 
    depends_on = [
@@ -41,6 +46,7 @@ resource "aws_launch_template" "template-app" {
     resource_type = "instance"
     tags = {
       Name = var.app-instance-name
+      Owner = var.owner-tag
     }
   }
 }

@@ -12,17 +12,29 @@ resource "aws_lb_target_group" "target-group-web" {
     unhealthy_threshold = 5
 
   }
+  
+
+  depends_on = [aws_lb.alb-web]
+
+  tags = {
+    Name = var.tg-web-name
+    Owner = var.owner-tag
+  }
 }
+
 
 # HTTPS 프로토콜을 사용하므로 이를 받아줄 리스너
 # default action으로 404 페이지 출력
+
+/*
 resource "aws_lb_listener" "myhttps" {
   load_balancer_arn = aws_lb.alb-web.arn
   port              = 443
   protocol          = "HTTPS"
  
   ssl_policy       = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = aws_acm_certificate.example.arn
+  #certificate_arn   = aws_acm_certificate.example.arn
+  depends_on = [aws_acm_certificate.example]
  
   # By default, return a simple 404 page
   default_action {
@@ -33,6 +45,10 @@ resource "aws_lb_listener" "myhttps" {
       message_body = "404: page not found - BABO"
       status_code  = 404
     }
+  }
+
+  tags = {
+    Owner = var.owner-tag
   }
 }
 
@@ -52,8 +68,12 @@ resource "aws_lb_listener_rule" "https-rule" {
     type = "forward"
     target_group_arn = aws_lb_target_group.target-group-web.arn
   }
-}
 
+  tags = {
+    Owner = var.owner-tag
+  }
+}
+*/
 
 # HTTP 프로토콜 리스너
 # default action으로 404 페이지 출력
@@ -64,12 +84,11 @@ resource "aws_lb_listener" "myhttp" {
 
   # By default, return a simple 404 page
   default_action {
-    type = "redirect"
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.target-group-web.arn
+  }
 
-    redirect {
-      port = "443"
-      protocol = "HTTPS"
-      status_code = "HTTP_301"
-    }
+  tags = {
+    Owner = var.owner-tag
   }
 }

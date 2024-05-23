@@ -8,6 +8,7 @@ resource "aws_route_table" "public-route-table" {
 
   tags = {
     Name = var.public-rt-name
+    Owner = var.owner-tag
   }
 }
 

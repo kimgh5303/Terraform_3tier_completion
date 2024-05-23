@@ -21,5 +21,6 @@ resource "aws_security_group" "alb-security-group-app" {
 
   tags = {
     Name = var.alb-sg-app-name
+    Owner = var.owner-tag
   }
 }

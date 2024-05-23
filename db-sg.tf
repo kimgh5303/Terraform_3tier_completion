@@ -19,5 +19,6 @@ resource "aws_security_group" "db-sg" {
 
   tags = {
     Name = var.db-sg-name
+    Owner = var.owner-tag
   }
 }

@@ -4,9 +4,17 @@ resource "aws_launch_template" "template-web" {
   instance_type = var.instance-type
   #key_name      = var.key-name
 
-  #iam_instance_profile {
-  #  name = aws_iam_instance_profile.asg_instance_profile.name
-  #}
+  iam_instance_profile {
+    arn = aws_iam_instance_profile.ecs_instance_profile.arn
+  }
+
+  monitoring {
+    enabled = true
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
 
   # 인스턴스 안에서 메타데이터 사용가능
   metadata_options {
@@ -23,7 +31,8 @@ resource "aws_launch_template" "template-web" {
 
   
   user_data = base64encode(templatefile("web-user-data.sh",{
-    alb_dns = "${aws_lb.alb-app.dns_name}"
+    ecs-cluster-name = "${var.web-prefix}-${var.ecs-cluster-name}"
+
   }))
 
    depends_on = [
@@ -35,6 +44,7 @@ resource "aws_launch_template" "template-web" {
     resource_type = "instance"
     tags = {
       Name = var.web-instance-name
+      Owner = var.owner-tag
     }
   }
 }

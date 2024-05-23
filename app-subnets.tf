@@ -6,6 +6,7 @@ resource "aws_subnet" "web-subnet1" {
 
   tags = {
     Name = var.web-subnet1-name
+    Owner = var.owner-tag
   }
 }
 
@@ -17,6 +18,7 @@ resource "aws_subnet" "web-subnet2" {
 
   tags = {
     Name = var.web-subnet2-name
+    Owner = var.owner-tag
   }
 }
 
@@ -28,6 +30,7 @@ resource "aws_subnet" "app-subnet1" {
 
   tags = {
     Name = var.app-subnet1-name
+    Owner = var.owner-tag
   }
 }
 
@@ -39,5 +42,6 @@ resource "aws_subnet" "app-subnet2" {
 
   tags = {
     Name = var.app-subnet2-name
+    Owner = var.owner-tag
   }
 }

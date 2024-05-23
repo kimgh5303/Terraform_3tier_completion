@@ -4,5 +4,6 @@ resource "aws_vpc" "vpc" {
   enable_dns_hostnames = true
   tags = {
     Name = var.vpc-name
+    Owner = var.owner-tag
   }
 }

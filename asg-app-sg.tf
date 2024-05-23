@@ -12,12 +12,13 @@ resource "aws_security_group" "asg-security-group-app" {
   }
 
   ingress {
-    description     = "SSH From Anywhere or Your-IP"
-    from_port       = 22
-    to_port         = 22
+    description     = "HTTP from ALB"
+    from_port       = 1024
+    to_port         = 65535
     protocol        = "tcp"
-    security_groups = [aws_security_group.asg-security-group-web.id]
+    security_groups = [aws_security_group.alb-security-group-app.id]
   }
+
 
   egress {
     from_port   = 0
@@ -28,5 +29,6 @@ resource "aws_security_group" "asg-security-group-app" {
 
   tags = {
     Name = var.asg-sg-app-name
+    Owner = var.owner-tag
   }
 }

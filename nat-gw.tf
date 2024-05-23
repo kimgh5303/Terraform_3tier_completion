@@ -13,6 +13,7 @@ resource "aws_nat_gateway" "nat-gw" {
 
   tags = {
     Name = var.nat-gw-name1
+    Owner = var.owner-tag
   }
 
   depends_on = [aws_internet_gateway.internet-gw]
@@ -25,6 +26,7 @@ resource "aws_nat_gateway" "nat-gw2" {
 
   tags = {
     Name = var.nat-gw-name2
+    Owner = var.owner-tag
   }
 
   depends_on = [aws_internet_gateway.internet-gw]
