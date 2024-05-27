@@ -44,6 +44,32 @@ resource "aws_db_instance" "rds-db" {
   }
 }
 
+locals {
+  db_endpoint = split(":", aws_db_instance.rds-db.endpoint)[0]
+}
+
+# DB 스키마 설정-----------------------------------------------------------
+resource "null_resource" "db_schema_setup" {
+  depends_on = [aws_db_instance.rds-db]
+
+  provisioner "remote-exec" {
+    connection {
+      type        = "ssh"
+      user        = "ec2-user"
+      host        = aws_instance.bastion.public_ip
+      private_key = file(local_file.private_key_pem.filename)
+    }
+
+    inline = [
+      # MySQL Community Repository 추가
+      "sudo yum install -y https://dev.mysql.com/get/mysql80-community-release-el9-1.noarch.rpm",
+      "sudo rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2023",
+
+      # MySQL 클라이언트 설치
+      "sudo yum install -y mysql-community-client"
+    ]
+  }
+}
 
 
 

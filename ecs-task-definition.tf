@@ -13,7 +13,7 @@ resource "aws_ecs_task_definition" "web-ecs-service" {
   container_definitions = jsonencode([
     {
       name      = "web-nginx-container"
-      image     = "381492154999.dkr.ecr.ap-northeast-2.amazonaws.com/frontend:3.0"
+      image     = "381492154999.dkr.ecr.ap-northeast-2.amazonaws.com/frontend:latest"
       cpu       = 10
       memory    = 256
       essential = true
