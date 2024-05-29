@@ -53,6 +53,7 @@ resource "aws_ecs_task_definition" "web-ecs-service" {
     expression = "attribute:ecs.availability-zone in [${var.az-1}, ${var.az-2}]"
   }
 
+  depends_on = [aws_ecs_task_definition.app-ecs-service]
 
   tags = {
     Name = "${var.web-prefix}-${var.ecs-task-definition}"
@@ -76,7 +77,7 @@ resource "aws_ecs_task_definition" "app-ecs-service" {
   container_definitions = jsonencode([
     {
       name      = "app-nginx-container"
-      image     = "381492154999.dkr.ecr.ap-northeast-2.amazonaws.com/backend:3.0"
+      image     = "381492154999.dkr.ecr.ap-northeast-2.amazonaws.com/backend:latest"
       cpu       = 10
       memory    = 256
       essential = true
@@ -116,6 +117,7 @@ resource "aws_ecs_task_definition" "app-ecs-service" {
     expression = "attribute:ecs.availability-zone in [${var.az-1}, ${var.az-2}]"
   }
 
+  depends_on = [null_resource.db_schema_setup]
 
   tags = {
     Name = "${var.app-prefix}-${var.ecs-task-definition}"

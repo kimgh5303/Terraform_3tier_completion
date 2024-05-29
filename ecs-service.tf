@@ -52,6 +52,9 @@ resource "aws_ecs_service" "app-ecs-service" {
     type  = "spread"
     field = "attribute:ecs.availability-zone"
   }
+  
+  # 헬스 체크 유예 기간 설정
+  health_check_grace_period_seconds = 400
 
   ordered_placement_strategy {
     type  = "binpack"

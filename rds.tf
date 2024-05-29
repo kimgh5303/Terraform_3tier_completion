@@ -31,12 +31,21 @@ resource "aws_db_instance" "rds-db" {
   username               = var.db-username
   password               = var.db-password
   parameter_group_name   = aws_db_parameter_group.mysql8-parameter-group.name
-  multi_az               = true                                                                # multi-az
   db_subnet_group_name   = aws_db_subnet_group.subnet-grp.name
   vpc_security_group_ids = [aws_security_group.db-sg.id]
   skip_final_snapshot    = true
   identifier = "my-rds-instance" // RDS 인스턴스의 이름 지정
 
+  # 멀티 AZ 설정 활성화
+  multi_az = true
+
+  # 자동 백업 설정
+  backup_retention_period = 7
+  backup_window           = "04:00-06:00"
+
+  # 유지 관리 및 스냅샷 관련 설정
+  maintenance_window      = "Mon:00:00-Mon:03:00"
+  copy_tags_to_snapshot   = true
 
   tags = {
     Name = "my-rds-instance"
@@ -52,6 +61,17 @@ locals {
 resource "null_resource" "db_schema_setup" {
   depends_on = [aws_db_instance.rds-db]
 
+  provisioner "file" {
+    connection {
+      type        = "ssh"
+      user        = "ec2-user"
+      host        = aws_instance.bastion.public_ip
+      private_key = file(local_file.private_key_pem.filename)
+    }
+    source      = "./init.sql"
+    destination = "/home/ec2-user/init.sql"
+  }
+
   provisioner "remote-exec" {
     connection {
       type        = "ssh"
@@ -66,7 +86,10 @@ resource "null_resource" "db_schema_setup" {
       "sudo rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2023",
 
       # MySQL 클라이언트 설치
-      "sudo yum install -y mysql-community-client"
+      "sudo yum install -y mysql-community-client",
+      
+      # 스키마 적용
+      "mysql -h ${local.db_endpoint} -P 3306 -u ${var.db-username} -p${var.db-password} < /home/ec2-user/init.sql"
     ]
   }
 }
