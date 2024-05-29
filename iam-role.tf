@@ -61,9 +61,6 @@ resource "aws_iam_role" "ecs-service-role" {
 }
 */
 
-
-
-
 # EC2 -> ECS 접근 역할 설정(시작 템플릿) # EC2 것
 resource "aws_iam_role" "ecs_instance_role" {
   name               = var.ecs-instance-role
