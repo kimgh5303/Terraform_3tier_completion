@@ -2,7 +2,6 @@ resource "aws_launch_template" "template-web" {
   name          = var.launch-template-web-name
   image_id      = var.image-id
   instance_type = var.instance-type
-  #key_name      = var.key-name
 
   iam_instance_profile {
     arn = aws_iam_instance_profile.ecs_instance_profile.arn
@@ -29,13 +28,11 @@ resource "aws_launch_template" "template-web" {
     security_groups = [aws_security_group.asg-security-group-web.id]
   }
 
-  
   user_data = base64encode(templatefile("web-user-data.sh",{
     ecs-cluster-name = "${var.web-prefix}-${var.ecs-cluster-name}"
-
   }))
 
-   depends_on = [
+  depends_on = [
     aws_lb.alb-web
   ]
 

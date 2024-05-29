@@ -2,7 +2,6 @@ resource "aws_launch_template" "template-app" {
   name          = var.launch-template-app-name
   image_id      = var.image-id
   instance_type = var.instance-type
-  #key_name      = var.key-name
   
   iam_instance_profile {
     arn = aws_iam_instance_profile.ecs_instance_profile.arn
@@ -16,11 +15,9 @@ resource "aws_launch_template" "template-app" {
     create_before_destroy = true
   }
 
-
   network_interfaces {
     device_index    = 0
     security_groups = [aws_security_group.asg-security-group-app.id]
-    
   }
 
  # 인스턴스 안에서 메타데이터 사용가능
@@ -31,7 +28,6 @@ resource "aws_launch_template" "template-app" {
     instance_metadata_tags      = "enabled"
   }
 
-
   user_data = base64encode(templatefile("app-user-data.sh",{
     ecs-cluster-name = "${var.app-prefix}-${var.ecs-cluster-name}"
   }))
@@ -39,7 +35,6 @@ resource "aws_launch_template" "template-app" {
    depends_on = [
     aws_db_instance.rds-db
   ]
-
 
   tag_specifications {
 
