@@ -31,21 +31,19 @@ resource "aws_db_instance" "rds-db" {
   username               = var.db-username
   password               = var.db-password
   parameter_group_name   = aws_db_parameter_group.mysql8-parameter-group.name
-  multi_az               = true                                                                # multi-az
   db_subnet_group_name   = aws_db_subnet_group.subnet-grp.name
   vpc_security_group_ids = [aws_security_group.db-sg.id]
   skip_final_snapshot    = true
   identifier = "my-rds-instance" // RDS 인스턴스의 이름 지정
 
+  multi_az               = true                    # multi-az
+  backup_retention_period = 7                      # 자동 백업을 유지하는 기간
+  backup_window = "07:00-09:00"          # 자동 백업이 수행될 하루 중 시간을 지정
 
   tags = {
     Name = "my-rds-instance"
     Owner = var.owner-tag
   }
-}
-
-locals {
-  db_endpoint = split(":", aws_db_instance.rds-db.endpoint)[0]
 }
 
 # DB 스키마 설정-----------------------------------------------------------
