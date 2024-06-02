@@ -95,3 +95,6 @@ ecs-service-name = "ecs-service"
 
 # cloudwatch
 retention_in_days = 30 # 로그 보관 기간. 이후 삭제
+
+# domain
+domain-name = "mkcloud.site"
