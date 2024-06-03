@@ -28,7 +28,7 @@ resource "aws_lb_listener" "myhttps-forward" {
   port              = 443
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = aws_acm_certificate.alb-cert.arn
+  certificate_arn   = aws_acm_certificate.cert.arn
 
   default_action {
     type             = "forward"
@@ -39,12 +39,12 @@ resource "aws_lb_listener" "myhttps-forward" {
     Owner = var.owner-tag
   }
 
-  depends_on = [aws_acm_certificate_validation.cert]
+  depends_on = [aws_acm_certificate_validation.cert_val]
 }
 
 # HTTPS 리스너 규칙 생성
 resource "aws_lb_listener_rule" "https-rule" {
-  listener_arn = aws_lb_listener.myhttps.arn
+  listener_arn = aws_lb_listener.myhttps-forward.arn
   priority     = 100
  
   condition {
@@ -77,6 +77,8 @@ resource "aws_lb_listener" "http-redirection" {
 }
 
 #--------------------------------------------------------------------
+# https 리다이렉션과 충돌하기 때문에 주석처리
+/*
 # HTTP 프로토콜 리스너
 # default action으로 404 페이지 출력
 
@@ -95,3 +97,4 @@ resource "aws_lb_listener" "myhttp" {
     Owner = var.owner-tag
   }
 }
+*/

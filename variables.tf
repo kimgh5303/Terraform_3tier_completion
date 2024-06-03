@@ -211,3 +211,6 @@ variable "ecs-service-name" {}
 
 # cloudwatch
 variable "retention_in_days" {}
+
+# domain
+variable "domain-name" {}

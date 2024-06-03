@@ -34,7 +34,7 @@ resource "aws_acm_certificate_validation" "cert_val" {
 
 }
 
-# ACM 검증을 위한 CNAME 레코드 생성
+# ACM 인증서 검증을 위한 CNAME 레코드 생성
 resource "aws_route53_record" "cert_validation" {
   for_each = {
     for dvo in aws_acm_certificate.cert.domain_validation_options : dvo.domain_name => {
@@ -52,10 +52,11 @@ resource "aws_route53_record" "cert_validation" {
   zone_id         = data.aws_route53_zone.zone.zone_id
 }
 
+# ALB를 위한 CNAME 레코드 생성
 resource "aws_route53_record" "alb-web" {
   zone_id = data.aws_route53_zone.zone.zone_id
-  name    = "web.${var.domain-name}"
-  type    = "A"
+  name    = "kgh.${var.domain-name}"
+  type    = "CNAME"
   ttl     = 86400
   records = [aws_lb.alb-web.dns_name]
 }
