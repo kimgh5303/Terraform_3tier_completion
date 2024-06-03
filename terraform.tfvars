@@ -40,7 +40,7 @@ private-rt-name2         = "kgh-three-tier-private-route-table2"
 
 
 launch-template-web-name = "kgh-three-tier-launch-template-web"
-image-id                 = "ami-0d070dfaaef6e355c" # al2023-ami-ecs-hvm-2023.0.20240430-kernel-6.1-x86_64     ecs-optimized ami
+image-id                 = "ami-0d070dfaaef6e355c"                  # al2023-ami-ecs-hvm-2023.0.20240430-kernel-6.1-x86_64     ecs-optimized ami
 instance-type            = "t2.micro"
 
 bastion-image-id         = "ami-0dfabddd52dec98c7"

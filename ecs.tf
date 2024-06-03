@@ -14,7 +14,6 @@ resource "aws_ecs_cluster" "ecs-cluster-web" {
     Name = "${var.web-prefix}-${var.ecs-cluster-name}"
     Owner = var.owner-tag
   }
-
 }
 
 resource "aws_ecs_cluster" "ecs-cluster-app" {
@@ -29,10 +28,8 @@ resource "aws_ecs_cluster" "ecs-cluster-app" {
     create_before_destroy = true
   }
 
-  
   tags = {
     Name = "${var.app-prefix}-${var.ecs-cluster-name}"
     Owner = var.owner-tag
   }
-
 }

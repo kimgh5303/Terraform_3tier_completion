@@ -11,7 +11,6 @@ resource "aws_lb_target_group" "target-group-web" {
     timeout = 3
     healthy_threshold = 3
     unhealthy_threshold = 5
-
   }
 
   depends_on = [aws_lb.alb-web]
@@ -75,26 +74,3 @@ resource "aws_lb_listener" "http-redirection" {
     }
   }
 }
-
-#--------------------------------------------------------------------
-# https 리다이렉션과 충돌하기 때문에 주석처리
-/*
-# HTTP 프로토콜 리스너
-# default action으로 404 페이지 출력
-
-resource "aws_lb_listener" "myhttp" {
-  load_balancer_arn = aws_lb.alb-web.arn
-  port              = 80
-  protocol          = "HTTP"
-
-  # By default, return a simple 404 page
-  default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.target-group-web.arn
-  }
-
-  tags = {
-    Owner = var.owner-tag
-  }
-}
-*/

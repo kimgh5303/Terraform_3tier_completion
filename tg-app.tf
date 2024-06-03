@@ -10,7 +10,6 @@ resource "aws_lb_target_group" "target-group-app" {
     timeout = 3
     healthy_threshold = 3
     unhealthy_threshold = 5
-
   }
 
   tags = {
