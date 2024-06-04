@@ -12,9 +12,8 @@ resource "aws_db_parameter_group" "mysql8-parameter-group" {
     name  = "collation_server"
     value = "utf8mb4_unicode_ci"
   }
-  
-  // 필요한 다른 매개 변수를 여기에 추가할 수 있습니다.
 }
+
 # RDS 데이터 소스 정의
 data "aws_db_instance" "my_rds" {
   db_instance_identifier = aws_db_instance.rds-db.identifier
@@ -37,8 +36,6 @@ resource "aws_db_instance" "rds-db" {
   identifier = "my-rds-instance" // RDS 인스턴스의 이름 지정
 
   multi_az               = true                    # multi-az
-  backup_retention_period = 7                      # 자동 백업을 유지하는 기간
-  backup_window = "07:00-09:00"          # 자동 백업이 수행될 하루 중 시간을 지정
 
   tags = {
     Name = "my-rds-instance"
