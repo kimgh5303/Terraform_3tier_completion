@@ -8,6 +8,7 @@
 # key files
 *.pub
 *.key
+*.pem
 
 # Crash log files
 crash.log
