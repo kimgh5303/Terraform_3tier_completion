@@ -53,7 +53,6 @@ resource "aws_ecs_task_definition" "web-ecs-service" {
     expression = "attribute:ecs.availability-zone in [${var.az-1}, ${var.az-2}]"
   }
 
-
   tags = {
     Name = "${var.web-prefix}-${var.ecs-task-definition}"
     Owner = var.owner-tag
