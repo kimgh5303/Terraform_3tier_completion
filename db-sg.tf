@@ -1,7 +1,7 @@
 resource "aws_security_group" "db-sg" {
   name        = var.db-sg-name
   description = "DB SEcurity Group"
-  vpc_id      = aws_vpc.vpc.id
+  vpc_id      = aws_vpc.vpc.id              # VPC의 ID를 지정
 
   ingress {
     from_port       = 3306                  # DB 포트 3306에서 트래픽 시작

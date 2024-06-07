@@ -1,11 +1,13 @@
 # 베스천 호스트 인스턴스 생성
 resource "aws_instance" "bastion" {
-  ami           = var.bastion-image-id
-  instance_type = var.bastion-instance-type
-  subnet_id     = aws_subnet.public-subnet1.id
-  vpc_security_group_ids = [aws_security_group.bastion_sg.id]
+  ami           = var.bastion-image-id            # 베스천 호스트에 사용될 AMI ID
+  instance_type = var.bastion-instance-type       # 인스턴스 유형
+  subnet_id     = aws_subnet.public-subnet1.id    # 베스천 호스트가 위치할 퍼블릭 서브넷 ID
 
-  key_name = aws_key_pair.deployer.key_name
+  # 인스턴스에 적용할 보안 그룹 ID 목록
+  vpc_security_group_ids = [aws_security_group.bastion_sg.id]   # 베스천 호스트용 보안 그룹
+
+  key_name = aws_key_pair.deployer.key_name       # SSH 접속에 사용될 키 페어의 이름
 
   tags = {
     Name = "bastion"
