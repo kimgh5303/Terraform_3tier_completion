@@ -34,6 +34,10 @@ resource "aws_ecs_task_definition" "web-ecs-service" {
         {
           name = "ALB"
           value = "${aws_lb.alb-app.dns_name}"  # ALB의 DNS 이름을 환경 변수로 전달
+        },
+        {
+          "name": "ECS_CONTAINER_METADATA_URI",
+          "value": "http://169.254.170.2/v4/metadata"
         }
       ],
 
