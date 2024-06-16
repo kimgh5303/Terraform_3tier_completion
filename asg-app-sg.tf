@@ -5,15 +5,6 @@ resource "aws_security_group" "asg-security-group-app" {
 
   ingress {
     description     = "HTTP from ALB"
-    from_port       = 80                    # HTTP 포트 80에서 트래픽 시작
-    to_port         = 80                    # HTTP 포트 80에서 트래픽 종료
-    protocol        = "tcp"                 # TCP 프로토콜 사용
-    security_groups = [aws_security_group.alb-security-group-app.id]
-    # ALB의 보안 그룹 ID를 참조하여 해당 그룹으로부터만 트래픽 허용
-  }
-
-  ingress {
-    description     = "HTTP from ALB"
     from_port       = 1024                  # 동적 포트 할당 시작
     to_port         = 65535                 # 동적 포트 할당 종료
     protocol        = "tcp"                 # TCP 프로토콜 사용
