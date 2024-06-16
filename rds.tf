@@ -22,7 +22,7 @@ data "aws_db_instance" "my_rds" {
 }
 
 resource "aws_db_instance" "rds-db" {
-  allocated_storage      = 10                           # 할당된 스토리지 크기 (GB)
+  allocated_storage      = 20                           # 할당된 스토리지 크기 (GB)
   db_name                = var.db-name
   engine                 = "mysql"                      # 데이터베이스 엔진
   engine_version         = "8.0"                        # MySQL 8.0 버전
