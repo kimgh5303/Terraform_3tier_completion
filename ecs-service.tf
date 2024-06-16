@@ -3,7 +3,7 @@ resource "aws_ecs_service" "web-ecs-service" {
   name            = "${var.web-prefix}-${var.ecs-service-name}"
   cluster         = aws_ecs_cluster.ecs-cluster-web.id            # 사용할 ECS 클러스터의 ID
   task_definition = aws_ecs_task_definition.web-ecs-service.arn   # 사용할 태스크 정의의 ARN
-  desired_count   = 2                                             # 태스크의 수
+  desired_count   = 4                                             # 태스크의 수
 
   # 의존성 설정
   depends_on = [aws_ecs_task_definition.web-ecs-service,aws_ecs_cluster.ecs-cluster-web]
@@ -45,7 +45,7 @@ resource "aws_ecs_service" "app-ecs-service" {
   name            = "${var.app-prefix}-${var.ecs-service-name}"
   cluster         = aws_ecs_cluster.ecs-cluster-app.id            # 사용할 ECS 클러스터의 ID
   task_definition = aws_ecs_task_definition.app-ecs-service.arn   # 사용할 태스크 정의의 ARN
-  desired_count   = 2                                             # 태스크의 수
+  desired_count   = 4                                             # 태스크의 수
   
   # 의존성 설정
   depends_on = [aws_ecs_task_definition.app-ecs-service,aws_ecs_cluster.ecs-cluster-app]
